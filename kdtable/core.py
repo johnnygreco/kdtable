@@ -23,7 +23,7 @@ class KDTable(object):
     @property
     def kdt(self):
         if self._kdt is None:
-            xyz = ra_dec_to_xyz(self.data[self.ra_col], self.data[self.ra_col])
+            xyz = ra_dec_to_xyz(self.data[self.ra_col], self.data[self.dec_col])
             xyz = np.asarray(xyz).T
             self._kdt = KDTree(xyz)
         return self._kdt
