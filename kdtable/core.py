@@ -39,7 +39,7 @@ class KDTable(object):
                 self.data[self.ra_col], self.data[self.dec_col], unit='deg')
         return self._skycoord
 
-    def query_radius(self, coords, r, count_only=False):
+    def query_radius(self, coords, r, count_only=False, return_seps=True):
         """
         Search for sources around coords within circle of 
         radius r in degrees. 
@@ -63,9 +63,10 @@ class KDTable(object):
                 idx = idx[0]
                 dist = euclidean_dist_to_angular_dist(dist[0])
             else:
-                for i in range(len(dist)):
-                    dist[i] = euclidean_dist_to_angular_dist(dist[i])
-            results = idx, dist
+                if return_seps:
+                    for i in range(len(dist)):
+                        dist[i] = euclidean_dist_to_angular_dist(dist[i])
+            results = (idx, dist) if return_seps else idx
         return results
 
     def make_cuts(self, cuts):
