@@ -13,8 +13,9 @@ __all__ = ['KDTable']
 
 class KDTable(object):
 
-    def __init__(self, fn=None, format='csv', ra_col='ra', dec_col='dec'):
-        self.data = Table.read(fn, format=format)
+    def __init__(self, fn=None, format='csv', ra_col='ra', 
+                 dec_col='dec', data=None):
+        self.data = data if data else Table.read(fn, format=format)
         self._kdt = None
         self._skycoord = None
         self.ra_col = ra_col
@@ -23,7 +24,8 @@ class KDTable(object):
     @property
     def kdt(self):
         if self._kdt is None:
-            xyz = ra_dec_to_xyz(self.data[self.ra_col], self.data[self.dec_col])
+            xyz = ra_dec_to_xyz(
+                self.data[self.ra_col], self.data[self.dec_col])
             xyz = np.asarray(xyz).T
             self._kdt = KDTree(xyz)
         return self._kdt
